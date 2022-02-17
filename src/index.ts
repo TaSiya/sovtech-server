@@ -10,9 +10,15 @@ const typeDefs = gql`
     homeworld: String!
   }
 
+  type People {
+    next: String! 
+    previous: String 
+    results: [Person]
+  }
+
   type Query {
-    people (page: Int): [Person]!
-    person(name: String!): Person!
+    people(page: Int): People
+    searchByName(name: String!): Person!
   }
 `
 
@@ -28,12 +34,12 @@ const baseUrl = 'https://swapi.dev/api/'
 
 const resolvers = {
   Query: {
-    people: async (root, {page}) => {
+    people: async (root, {page}: {page: number}) => {
       const peopleDataPromiseResponse = await fetch(baseUrl + 'people/?page=' + (page ? page : 1) )
       const peopleData : any = await peopleDataPromiseResponse.json()
-      return peopleData.results
+      return peopleData
     }, 
-    person: async (root, {name} : {name: string}) => {
+    searchByName: async (root, {name} : {name: string}) => {
       const personDataPromiseResponse = await fetch(baseUrl + 'people/?search='+ name)
       const personData : any = await personDataPromiseResponse.json()
       return personData.results[0]
