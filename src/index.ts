@@ -3,15 +3,16 @@ import fetch from 'node-fetch'
 
 const typeDefs = gql`
   type Person {
-    name: String
-    height: Int
-    mass: Int
-    gender: String
-    homeworld: String
+    name: String!
+    height: Int!
+    mass: Int!
+    gender: String!
+    homeworld: String!
   }
 
   type Query {
-    people: [Person]
+    people (page: Int): [Person]!
+    person(name: String!): Person!
   }
 `
 
@@ -27,10 +28,15 @@ const baseUrl = 'https://swapi.dev/api/'
 
 const resolvers = {
   Query: {
-    people: async () => {
-      const peopleDataPromiseResponse = await fetch(baseUrl + 'people/')
+    people: async (root, {page}) => {
+      const peopleDataPromiseResponse = await fetch(baseUrl + 'people/?page=' + (page ? page : 1) )
       const peopleData : any = await peopleDataPromiseResponse.json()
       return peopleData.results
+    }, 
+    person: async (root, {name} : {name: string}) => {
+      const personDataPromiseResponse = await fetch(baseUrl + 'people/?search='+ name)
+      const personData : any = await personDataPromiseResponse.json()
+      return personData.results[0]
     }
   }
 }
