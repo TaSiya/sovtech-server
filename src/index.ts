@@ -3,21 +3,15 @@ import fetch from 'node-fetch'
 
 const typeDefs = gql`
   type Person {
-    name: String!
-    height: Int!
-    mass: Int!
-    gender: String!
-    homeworld: String!
-  }
-
-  type People {
-    next: String! 
-    previous: String 
-    results: [Person]
+    name: String
+    gender: String
+    homeworld: String
+    mass: String  
+    height: String   
   }
 
   type Query {
-    people(page: Int): People
+    people(page: Int): [Person]
     searchByName(name: String!): Person!
   }
 `
@@ -37,7 +31,7 @@ const resolvers = {
     people: async (root, {page}: {page: number}) => {
       const peopleDataPromiseResponse = await fetch(baseUrl + 'people/?page=' + (page ? page : 1) )
       const peopleData : any = await peopleDataPromiseResponse.json()
-      return peopleData
+      return peopleData.results 
     }, 
     searchByName: async (root, {name} : {name: string}) => {
       const personDataPromiseResponse = await fetch(baseUrl + 'people/?search='+ name)
