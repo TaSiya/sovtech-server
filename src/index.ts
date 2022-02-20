@@ -24,7 +24,11 @@ type Person = {
   homeworld: String
 }
 
-const baseUrl = 'https://swapi.dev/api/'
+/*
+ # Removed https://swapi.dev/api/ as source since it looks like it is not longer supported
+ # Added an issue to the repo : https://github.com/phalt/swapi/issues/163
+*/
+const baseUrl = 'https://swapi.py4e.com/api/'
 
 const resolvers = {
   Query: {
