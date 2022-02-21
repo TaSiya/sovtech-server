@@ -28,7 +28,7 @@ type Person = {
  # Removed https://swapi.dev/api/ as source since it looks like it is not longer supported
  # Added an issue to the repo : https://github.com/phalt/swapi/issues/163
 */
-const baseUrl = 'https://swapi.py4e.com/api/'
+const baseUrl = 'https://swapi.dev/api/'
 
 const resolvers = {
   Query: {
